@@ -40,9 +40,9 @@ def print_state_site(url):
     try:
         if not is_server_respond_with_200(url):
             respond = 'OFF'
-    except requests.exceptions.RequestException as e:
+    except requests.exceptions.RequestException as error:
         print('{:3} {}'.format('ОШИБКА', url))
-        print(e)
+        print(error)
         return
 
     domain_name = urlparse(url).netloc
