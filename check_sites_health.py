@@ -9,7 +9,10 @@ def main():
     parser = create_parser()
     namespace = parser.parse_args()
     for url in load_urls4check(namespace.file):
-        print_state_site(url)
+        respond = is_server_respond_with_ok(url)
+        domain_name = urlparse(url).netloc
+        expiration_date = get_domain_expiration_date(domain_name)
+        print_state_site(url, expiration_date, respond)
 
 
 def create_parser():
@@ -24,7 +27,10 @@ def load_urls4check(file_obj):
 
 
 def is_server_respond_with_ok(url):
-    return requests.get(url).ok
+    try:
+        return requests.get(url).ok
+    except requests.exceptions.RequestException:
+        return False
 
 
 def get_domain_expiration_date(domain_name):
@@ -34,23 +40,19 @@ def get_domain_expiration_date(domain_name):
     return expiration_date
 
 
-def print_state_site(url):
-    respond = 'ON'
-    try:
-        if not is_server_respond_with_200(url):
-            respond = 'OFF'
-    except requests.exceptions.RequestException as error:
-        print('{:3} {}'.format('ОШИБКА', url))
-        print(error)
-        return
+def print_state_site(url, expiration_date, respond):
+    respond_text = 'OFF'
+    if respond:
+        respond_text = 'ON'
 
-    domain_name = urlparse(url).netloc
-    expiration_date = get_domain_expiration_date(domain_name)
-
-    expiration_text = 'Непроплачено'
-    if expiration_date - datetime.now() > timedelta(days=30):
+    if not expiration_date:
+        expiration_text = 'Ошибка'
+    elif expiration_date - datetime.now() > timedelta(days=30):
         expiration_text = 'Проплачено'
-    print('{:3} {} {}'.format(respond, expiration_text, url))
+    else:
+        expiration_text = 'Непроплачено'
+
+    print('{:3} {} {}'.format(respond_text, expiration_text, url))
 
 
 if __name__ == '__main__':
