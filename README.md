@@ -28,10 +28,7 @@ python check_sites_health.py <path_to_file>
 ```sh
 python seek_dev_nighters.py urls.txt
 
-ОШИБКА https://devma1n.org/1
-HTTPSConnectionPool(host='devma1n.org', port=443): Max retries exceeded with url: /1 (Caused by NewConnectionError('<urllib3.co
-nnection.VerifiedHTTPSConnection object at 0x7fbbf4701e10>: Failed to establish a new connection: [Errno -2] Name or service no
-t known',))
+OFF Ошибка https://devma1n.org/1
 ON  Проплачено https://vk.com/
 ON  Проплачено https://stackoverflow.com/
 ON  Проплачено https://github.com/
