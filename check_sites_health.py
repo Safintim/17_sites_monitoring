@@ -23,7 +23,7 @@ def load_urls4check(file_obj):
         return [line.strip() for line in file_obj if line.strip()]
 
 
-def is_server_respond_with_200(url):
+def is_server_respond_with_ok(url):
     return requests.get(url).ok
 
 
