@@ -19,9 +19,8 @@ def create_parser():
 
 
 def load_urls4check(file_obj):
-    urls = [line.strip() for line in file_obj if line.strip()]
-    file_obj.close()
-    return urls
+    with file_obj:
+        return [line.strip() for line in file_obj if line.strip()]
 
 
 def is_server_respond_with_200(url):
