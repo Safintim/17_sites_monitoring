@@ -17,13 +17,19 @@ def main():
 
 def create_parser():
     parser = argparse.ArgumentParser()
-    parser.add_argument('file', type=argparse.FileType(), help='path to file')
+    parser.add_argument('file', type=is_file, help='path to file')
     return parser
 
 
-def load_urls4check(file_obj):
-    with file_obj:
-        return [line.strip() for line in file_obj if line.strip()]
+def is_file(filepath):
+    if os.path.isfile(filepath):
+        return filepath
+    raise argparse.ArgumentTypeError('file not found')
+
+
+def load_urls4check(filepath):
+    with open(filepath) as urlsfile:
+        return [line.strip() for line in urlsfile if line.strip()]
 
 
 def is_server_respond_with_ok(url):
